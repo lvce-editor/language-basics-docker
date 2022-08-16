@@ -1,0 +1,14 @@
+{
+  "id": "builtin.language-basics-docker",
+  "name": "Language Basics Docker",
+  "description": "Provides syntax highlighting and bracket matching in Dockerfile files.",
+  "languages": [
+    {
+      "id": "docker",
+      "fileExtensions": [".dockerfile", ".containerfile"],
+      "fileNames": ["Dockerfile", "Containerfile"],
+      "fileNamePatterns": ["Dockerfile.*", "Containerfile.*"],
+      "tokenize": "src/tokenizeDockerfile.js"
+    }
+  ]
+}
