@@ -5,7 +5,7 @@
   "languages": [
     {
       "id": "dockerfile",
-      "fileExtensions": [".dockerfile", ".containerfile"],
+      "extensions": [".dockerfile", ".containerfile"],
       "fileNames": ["Dockerfile", "Containerfile"],
       "fileNamePatterns": ["Dockerfile.*", "Containerfile.*"],
       "tokenize": "src/tokenizeDockerfile.js"
