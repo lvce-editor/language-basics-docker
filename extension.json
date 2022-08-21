@@ -1,5 +1,6 @@
 {
   "id": "builtin.language-basics-docker",
+  "version": "0.0.0-dev",
   "name": "Language Basics Docker",
   "description": "Provides syntax highlighting and bracket matching in Dockerfile files.",
   "languages": [
