@@ -44,6 +44,8 @@ const RE_ANYTHING = /^.*/
 const RE_KEYWORD =
   /^(?:ADD|ARG|CMD|COPY|ENTRYPOINT|ENV|EXPOSE|FROM|HEALTHCHECK|LABEL|MAINTAINER|RUN|SHELL|STOPSIGNAL|USER|VOLUME|WORKDIR)\b/
 
+export const hasArrayReturnValue = true
+
 /**
  * @param {string} line
  * @param {any} lineState
