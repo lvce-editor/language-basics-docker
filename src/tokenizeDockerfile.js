@@ -1,17 +1,6 @@
 /**
  * @enum number
  */
-export const TokenType = {
-  None: 0,
-  Text: 1,
-  VariableName: 2,
-  Keyword: 3,
-  Whitespace: 4,
-}
-
-/**
- * @enum number
- */
 export const State = {
   TopLevelContent: 1,
   AfterSelector: 2,
@@ -25,6 +14,19 @@ export const State = {
   AfterQuery: 10,
   InsideRound: 11,
   AfterQueryWithRules: 12,
+  InsideLineComment: 5,
+}
+
+/**
+ * @enum number
+ */
+export const TokenType = {
+  None: 0,
+  Text: 1,
+  VariableName: 2,
+  Keyword: 3,
+  Whitespace: 4,
+  Comment: 885,
 }
 
 export const TokenMap = {
@@ -32,6 +34,7 @@ export const TokenMap = {
   [TokenType.VariableName]: 'VariableName',
   [TokenType.Whitespace]: 'Whitespace',
   [TokenType.Keyword]: 'Keyword',
+  [TokenType.Comment]: 'Comment',
 }
 
 export const initialLineState = {
@@ -43,6 +46,7 @@ const RE_WHITESPACE = /^ +/
 const RE_ANYTHING = /^.*/
 const RE_KEYWORD =
   /^(?:ADD|ARG|CMD|COPY|ENTRYPOINT|ENV|EXPOSE|FROM|HEALTHCHECK|LABEL|MAINTAINER|RUN|SHELL|STOPSIGNAL|USER|VOLUME|WORKDIR)\b/
+const RE_LINE_COMMENT_START = /^#/
 
 export const hasArrayReturnValue = true
 
@@ -66,8 +70,19 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_WHITESPACE))) {
           token = TokenType.Whitespace
           state = State.TopLevelContent
+        } else if ((next = part.match(RE_LINE_COMMENT_START))) {
+          token = TokenType.Comment
+          state = State.InsideLineComment
         } else if ((next = part.match(RE_ANYTHING))) {
           token = TokenType.Text
+          state = State.TopLevelContent
+        } else {
+          throw new Error('no')
+        }
+        break
+      case State.InsideLineComment:
+        if ((next = part.match(RE_ANYTHING))) {
+          token = TokenType.Comment
           state = State.TopLevelContent
         } else {
           throw new Error('no')
@@ -82,6 +97,9 @@ export const tokenizeLine = (line, lineState) => {
       type: token,
       length: next[0].length,
     })
+  }
+  if (state === State.InsideLineComment) {
+    state = State.TopLevelContent
   }
   return {
     state,
