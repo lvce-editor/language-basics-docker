@@ -27,6 +27,7 @@ export const TokenType = {
   Keyword: 3,
   Whitespace: 4,
   Comment: 885,
+  String: 886,
 }
 
 export const TokenMap = {
@@ -35,6 +36,7 @@ export const TokenMap = {
   [TokenType.Whitespace]: 'Whitespace',
   [TokenType.Keyword]: 'Keyword',
   [TokenType.Comment]: 'Comment',
+  [TokenType.String]: 'String',
 }
 
 export const initialLineState = {
@@ -106,3 +108,5 @@ export const tokenizeLine = (line, lineState) => {
     tokens,
   }
 }
+
+tokenizeLine(`RUN bash -c "echo hello world"`, initialLineState) //?
