@@ -15,6 +15,7 @@ export const State = {
   InsideRound: 11,
   AfterQueryWithRules: 12,
   InsideLineComment: 5,
+  InsideString: 2,
 }
 
 /**
@@ -27,6 +28,8 @@ export const TokenType = {
   Keyword: 3,
   Whitespace: 4,
   Comment: 885,
+  String: 886,
+  PunctuationString: 13,
 }
 
 export const TokenMap = {
@@ -35,6 +38,8 @@ export const TokenMap = {
   [TokenType.Whitespace]: 'Whitespace',
   [TokenType.Keyword]: 'Keyword',
   [TokenType.Comment]: 'Comment',
+  [TokenType.String]: 'String',
+  [TokenType.PunctuationString]: 'PunctuationString',
 }
 
 export const initialLineState = {
@@ -47,6 +52,9 @@ const RE_ANYTHING = /^.*/
 const RE_KEYWORD =
   /^(?:ADD|ARG|CMD|COPY|ENTRYPOINT|ENV|EXPOSE|FROM|HEALTHCHECK|LABEL|MAINTAINER|RUN|SHELL|STOPSIGNAL|USER|VOLUME|WORKDIR)\b/
 const RE_LINE_COMMENT_START = /^#/
+const RE_PLAIN_TEXT = /^[^"\\]+/
+const RE_QUOTE_DOUBLE = /^"/
+const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
 
 export const hasArrayReturn = true
 
@@ -73,6 +81,12 @@ export const tokenizeLine = (line, lineState) => {
         } else if ((next = part.match(RE_LINE_COMMENT_START))) {
           token = TokenType.Comment
           state = State.InsideLineComment
+        } else if ((next = part.match(RE_QUOTE_DOUBLE))) {
+          token = TokenType.PunctuationString
+          state = State.InsideString
+        } else if ((next = part.match(RE_PLAIN_TEXT))) {
+          token = TokenType.Text
+          state = State.TopLevelContent
         } else if ((next = part.match(RE_ANYTHING))) {
           token = TokenType.Text
           state = State.TopLevelContent
@@ -84,6 +98,17 @@ export const tokenizeLine = (line, lineState) => {
         if ((next = part.match(RE_ANYTHING))) {
           token = TokenType.Comment
           state = State.TopLevelContent
+        } else {
+          throw new Error('no')
+        }
+        break
+      case State.InsideString:
+        if ((next = part.match(RE_QUOTE_DOUBLE))) {
+          token = TokenType.PunctuationString
+          state = State.TopLevelContent
+        } else if ((next = part.match(RE_STRING_DOUBLE_QUOTE_CONTENT))) {
+          token = TokenType.String
+          state = State.InsideString
         } else {
           throw new Error('no')
         }

@@ -1,0 +1,1 @@
+RUN bash -c "echo hello world"
