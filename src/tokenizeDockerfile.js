@@ -56,7 +56,7 @@ const RE_PLAIN_TEXT = /^[^"\\]+/
 const RE_QUOTE_DOUBLE = /^"/
 const RE_STRING_DOUBLE_QUOTE_CONTENT = /^[^"]+/
 
-export const hasArrayReturnValue = true
+export const hasArrayReturn = true
 
 /**
  * @param {string} line
@@ -117,11 +117,9 @@ export const tokenizeLine = (line, lineState) => {
         console.log({ state, line })
         throw new Error('no')
     }
-    index += next[0].length
-    tokens.push({
-      type: token,
-      length: next[0].length,
-    })
+    const tokenLength = next[0].length
+    index += tokenLength
+    tokens.push(token, tokenLength)
   }
   if (state === State.InsideLineComment) {
     state = State.TopLevelContent
