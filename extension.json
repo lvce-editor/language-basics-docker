@@ -6,10 +6,20 @@
   "languages": [
     {
       "id": "dockerfile",
-      "extensions": [".dockerfile", ".containerfile"],
-      "fileNames": ["Dockerfile", "Containerfile"],
-      "fileNamePatterns": ["Dockerfile.*", "Containerfile.*"],
+      "extensions": [
+        ".dockerfile",
+        ".containerfile"
+      ],
+      "fileNames": [
+        "Dockerfile",
+        "Containerfile"
+      ],
+      "fileNamePatterns": [
+        "Dockerfile.*",
+        "Containerfile.*"
+      ],
       "tokenize": "src/tokenizeDockerfile.js"
     }
-  ]
+  ],
+  "repository": "https://github.com/lvce-editor/language-basics-docker"
 }
