@@ -1,3 +1,7 @@
 import { exportStatic } from '@lvce-editor/shared-process'
+import { join } from 'node:path'
 
-await exportStatic()
+const root = join(import.meta.dirname, '..')
+await exportStatic({
+  root,
+})
