@@ -23,12 +23,12 @@ fs.mkdirSync(path.join(root, 'dist'))
 
 fs.copyFileSync(join(root, 'README.md'), join(root, 'dist', 'README.md'))
 const extensionJson = JSON.parse(
-  readFileSync(join(root, 'extension.json'), 'utf8')
+  readFileSync(join(root, 'extension.json'), 'utf8'),
 )
 extensionJson.version = getVersion()
 writeFileSync(
   join(root, 'dist', 'extension.json'),
-  JSON.stringify(extensionJson, null, 2) + '\n'
+  JSON.stringify(extensionJson, null, 2) + '\n',
 )
 fs.cpSync(join(root, 'src'), join(root, 'dist', 'src'), { recursive: true })
 
